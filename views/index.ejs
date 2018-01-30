@@ -1,0 +1,85 @@
+<% include _header %>
+
+
+
+  <div style="max-width: 50%; margin: auto" class="text-center">
+    <form action="/add" method="post">
+      <input name="symbol" type="text" placeholder="Stock Symbol" required autofocus>
+      <input type="submit" value="Add" class="btn btn-primary btn-sm">
+    </form>
+  </div>  
+
+<div id="chart" class="container-fluid" style="width:100%; height:400px;">
+
+</div>
+
+  <% symbolList.forEach(function(symbol)  { %>
+    <a href="/delete/<%=symbol%>" class="btn btn-danger delete-button" ><i class="fa fa-trash"></i> <%=symbol%></a> 
+  <% }) %>
+
+
+<script>
+
+<% if(seriesArr) { %>
+  Highcharts.stockChart('chart', {
+      rangeSelector: {
+          selected: 1
+      },
+
+      title: {
+          text: ''
+      },
+    
+      yAxis: {
+          labels: {
+              formatter: function () {
+                  return (this.value > 0 ? ' + ' : '') + this.value + '%';
+              }
+          },
+          plotLines: [{
+              value: 0,
+              width: 2,
+              color: 'silver'
+          }]
+      },
+    
+      plotOptions: {
+          series: {
+              compare: 'percent',
+              showInNavigator: true
+          }
+      },
+
+      series: <%-seriesArr%>
+  });
+    
+<% } %>
+    
+
+  
+    
+
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  var connection = new WebSocket('wss://vd1-stocks.glitch.me');
+
+  connection.onopen = function () {
+    console.log("opened websocket");
+    //connection.send("hi");
+  };
+                        
+  connection.onmessage = function (message) {
+    try {
+      var json = JSON.parse(message.data);
+      console.log("client received message="+json.cmd);
+      if(json.cmd === "reload")
+        location.reload();
+    } catch (e) {
+      console.log('This doesn\'t look like a valid JSON: ', message.data);
+      return;
+    }    
+  };
+
+</script>
+
+</body>
+</html>

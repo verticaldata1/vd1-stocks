@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>verticaldata1's stock chart website</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  </head>
+  
+  <body>
+      <div class="container-fluid text-center">
+        <h1>Web-linked stock chart</h1>
+      </div>
+      <div class="container-fluid" style="max-width: 50%; margin: auto">
+        <% errors.forEach(function(error) { %>
+          <div class="alert alert-danger" role="alert">
+            <%= error %>  
+          </div>
+        <% }) %>
+      </div>

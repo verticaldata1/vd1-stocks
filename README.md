@@ -1,1 +1,1 @@
-# vd1-stocks
+Stock chart. Uses web sockets to keep users in-sync

@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var fetch = require("node-fetch");
 var WebSocketServer = require('websocket').server;
 var flash = require("connect-flash");
+var session = require("express-session");
 var app = express();
 
 app.set("views", path.resolve(__dirname, "views"));
@@ -12,6 +13,11 @@ app.set("view engine", "ejs");
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(session ({
+  secret: "KASF&#Q",
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(flash());
 app.use(function(req, res, next) {
   res.locals.seriesArr = globalSeriesArrString;
@@ -60,7 +66,8 @@ app.post("/add", function(req, res, next) {
     }
   }).catch(function () {
     console.log("Promise Rejected");
-    
+    req.flash("error", "Stock symbol not found.");
+    res.redirect("/");
   });
   
 });
